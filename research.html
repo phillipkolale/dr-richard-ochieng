@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research & Design Initiatives | Dr. Richard Ochieng</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
+        body { background-color: #0b0f19; color: #f3f4f6; overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column; opacity: 0; transition: opacity 0.8s ease-in-out; }
+        body.loaded { opacity: 1; }
+        #canvas-3d { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; }
+        
+        .content-layer { position: relative; z-index: 2; width: 100%; flex: 1; display: flex; flex-direction: column; justify-content: space-between; pointer-events: none; }
+        header { padding: 40px 8%; display: flex; justify-content: space-between; align-items: center; pointer-events: auto; }
+        .logo { font-size: 22px; font-weight: 800; letter-spacing: 2px; color: #34d399; text-decoration: none; }
+        .logo span { color: #fff; font-weight: 300; }
+        nav a { color: #f3f4f6; text-decoration: none; margin-left: 35px; transition: color 0.3s; font-size: 0.85rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; position: relative; }
+        nav a::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px; background: #34d399; transition: width 0.3s; }
+        nav a:hover::after, nav a.active::after { width: 100%; }
+        nav a:hover, nav a.active { color: #34d399; }
+        
+        main { padding: 6% 8%; max-width: 950px; pointer-events: auto; }
+        h1 { font-size: 3.5rem; margin-bottom: 20px; font-weight: 900; letter-spacing: -1px; }
+        h1 span { background: linear-gradient(135deg, #60a5fa 0%, #34d399 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .intro-p { font-size: 1.2rem; color: #9ca3af; margin-bottom: 50px; line-height: 1.6; max-width: 780px; }
+        
+        .research-card { background: rgba(17, 24, 39, 0.5); border: 1px solid rgba(255,255,255,0.04); padding: 40px; margin-bottom: 35px; backdrop-filter: blur(10px); transition: all 0.3s; cursor: pointer; }
+        .research-card:hover { border-color: rgba(52, 211, 153, 0.4); transform: scale(1.01); background: rgba(17, 24, 39, 0.7); }
+        .research-card h2 { color: #34d399; font-size: 1.8rem; margin-bottom: 15px; font-weight: 700; }
+        .research-card p { font-size: 1rem; line-height: 1.6; color: #d1d5db; margin-bottom: 25px; }
+        .research-tag { display: inline-block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; color: #60a5fa; border: 1px solid rgba(96,165,250,0.3); padding: 6px 16px; font-weight: 700; }
+
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(7, 10, 16, 0.96); z-index: 10; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; display: flex; justify-content: center; align-items: center; }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal-box { background: #111827; border: 1px solid #34d399; padding: 45px; max-width: 650px; width: 90%; transform: scale(0.9); transition: transform 0.4s cubic-bezier(0.1, 1, 0.1, 1); position: relative; }
+        .modal-overlay.active .modal-box { transform: scale(1); }
+        .modal-close { position: absolute; top: 25px; right: 25px; color: #9ca3af; cursor: pointer; font-size: 1.8rem; transition: color 0.3s; line-height: 1; }
+        .modal-close:hover { color: #34d399; }
+        .modal-box h3 { color: #fff; font-size: 2rem; margin-bottom: 20px; font-weight: 900; }
+        .modal-box p { color: #cbd5e1; line-height: 1.7; margin-bottom: 30px; font-size: 1rem; }
+        .modal-btn { display: inline-block; background: #34d399; color: #0b0f19; padding: 14px 32px; text-decoration: none; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; font-size: 0.8rem; transition: background 0.3s; }
+        .modal-btn:hover { background: #fff; }
+
+        footer { background: #070a10; padding: 40px 8%; border-top: 1px solid rgba(255,255,255,0.05); position: relative; z-index: 3; display: flex; justify-content: space-between; align-items: center; }
+        footer p { margin-bottom: 0; font-size: 0.85rem; color: #4b5563; }
+        .footer-socials a { color: #9ca3af; text-decoration: none; margin-left: 20px; font-size: 0.85rem; font-weight: 600; transition: color 0.3s; }
+        .footer-socials a:hover { color: #34d399; }
+    </style>
+</head>
+<body>
+
+    <canvas id="canvas-3d"></canvas>
+
+    <div class="content-layer">
+        <header>
+            <a href="index.html" class="logo">DR. RICHARD<span>OCHIENG</span></a>
+            <nav>
+                <a href="index.html">Overview</a>
+                <a href="research.html" class="active">Research & Design</a>
+                <a href="frameworks.html">Biological Architecture</a>
+                <a href="connect.html">Connect</a>
+            </nav>
+        </header>
+
+        <main>
+            <h1>Scientific <span>Initiatives & Vectors</span></h1>
+            <p class="intro-p">Deploying comprehensive empirical methodologies to evaluate systemic biological design networks, optimize university laboratories, and expand regional scientific insights.</p>
+            
+            <div class="research-card" data-title="Intelligent Design Paradigm Modeling" data-info="Serving as a Lead Content and Research Consultant at the BioCosmos Africa Foundation. Coordinating empirical discourse, developing presentation materials, and reviewing text elements concerning complex biochemical structures, information systems in DNA, and macro-evolutionary boundary logic.">
+                <h2>BioCosmos Africa Strategic Research</h2>
+                <p>Formulating structural scientific frameworks to critique naturalistic models and map complex teleological parameters within living organisms on a regional scale.</p>
+                <div class="research-tag">Information Theory & Teleology</div>
+            </div>
+
+            <div class="research-card" data-title="Advanced Biological Pedagogy" data-info="Commanding laboratory operations, instructional delivery, and thesis advisory panels inside the Department of Biological Sciences at the University of Eldoret. Standardizing research vectors for undergraduate and post-graduate students in alignment with elite national quality guidelines.">
+                <h2>University Academic Instruction Architecture</h2>
+                <p>Directing next-generation laboratory models, instructional protocols, and empirical verification parameters across specialized biological modules.</p>
+                <div class="research-tag">Institutional Research & Governance</div>
+            </div>
+
+            <div class="research-card" data-title="Regional Scientific Content Syndication" data-info="Architecting cross-institutional collaboration networks to distribute specialized books, launch academic treatises, and anchor presentation structures that challenge standard evolutionary concepts. Integrating research findings directly into East African public intellectual spaces.">
+                <h2>Academic Publication & Public Discourse</h2>
+                <p>Publishing high-impact review models, producing educational media resources, and presenting analytical proof-points across cross-border research symposiums.</p>
+                <div class="research-tag">Symposium Operations & Public Engagement</div>
+            </div>
+        </main>
+        <div></div>
+    </div>
+
+    <div class="modal-overlay" id="research-modal">
+        <div class="modal-box">
+            <span class="modal-close" id="modal-close">&times;</span>
+            <h3 id="modal-title">Vector Core</h3>
+            <p id="modal-text">Extracting structural validation parameters...</p>
+            <a href="connect.html" class="modal-btn">Request Research Briefing</a>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Dr. Richard Ochieng. Designed by Vector Node.</p>
+        <div class="footer-socials">
+            <a href="https://www.biocosmosafrica.org" target="_blank">BioCosmos Africa</a>
+            <a href="connect.html">Secure Access Portal</a>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            document.body.classList.add("loaded");
+            const modal = document.getElementById("research-modal");
+            const modalTitle = document.getElementById("modal-title");
+            const modalText = document.getElementById("modal-text");
+            const closeBtn = document.getElementById("modal-close");
+
+            document.querySelectorAll(".research-card").forEach(card => {
+                card.addEventListener("click", () => {
+                    modalTitle.innerText = card.getAttribute("data-title");
+                    modalText.innerText = card.getAttribute("data-info");
+                    modal.classList.add("active");
+                });
+            });
+
+            closeBtn.addEventListener("click", () => modal.classList.remove("active"));
+            modal.addEventListener("click", (e) => { if(e.target === modal) modal.classList.remove("active"); });
+
+            document.querySelectorAll("nav a").forEach(el => {
+                el.addEventListener("click", (e) => {
+                    const destination = el.getAttribute("href");
+                    if (destination && !destination.startsWith("#") && !e.ctrlKey && !e.metaKey) {
+                        e.preventDefault();
+                        document.body.classList.remove("loaded");
+                        setTimeout(() => { window.location.href = destination; }, 600);
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script type="importmap">
+      { "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js" } }
+    </script>
+    <script type="module">
+        import * as THREE from 'three';
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 3, 5);
+        camera.lookAt(0,0,0);
+
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('canvas-3d'), antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        // Interactive dynamic wavy structural floor model
+        const geometry = new THREE.PlaneGeometry(16, 16, 30, 30);
+        const material = new THREE.MeshBasicMaterial({ color: 0x34d399, wireframe: true, side: THREE.DoubleSide, transparent: true, opacity: 0.12 });
+        const landscapeMesh = new THREE.Mesh(geometry, material);
+        landscapeMesh.rotation.x = -Math.PI / 2.1;
+        scene.add(landscapeMesh);
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        let pointerX = 0;
+        window.addEventListener('mousemove', (e) => { pointerX = (e.clientX / window.innerWidth); });
+
+        const clock = new THREE.Clock();
+        function animate() {
+            requestAnimationFrame(animate);
+            const time = clock.getElapsedTime();
+            const posAttr = geometry.attributes.position;
+            
+            for (let i = 0; i < posAttr.count; i++) {
+                const x = posAttr.getX(i);
+                const y = posAttr.getY(i);
+                // Math-based wave simulations replicating cellular membranes
+                const z = Math.sin(x * 0.3 + time * (0.6 + pointerX)) * 0.25 + Math.cos(y * 0.3 + time * 0.5) * 0.15;
+                posAttr.setZ(i, z);
+            }
+            posAttr.needsUpdate = true;
+            landscapeMesh.rotation.z = time * 0.01;
+            renderer.render(scene, camera);
+        }
+        animate();
+    </script>
+</body>
+</html>
